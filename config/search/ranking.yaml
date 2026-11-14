@@ -1,0 +1,5 @@
+default_limit: 20
+maximum_limit: 50
+vector_candidate_limit: 500
+rrf_constant: 60
+postgres_language: english

@@ -1,0 +1,11 @@
+FROM eclipse-temurin:21.0.9_10-jre-noble
+ARG LANGUAGETOOL_VERSION=6.6
+ARG LANGUAGETOOL_SHA256=53600506b399bb5ffe1e4c8dec794fd378212f14aaf38ccef9b6f89314d11631
+RUN apt-get update && apt-get install -y --no-install-recommends curl unzip && \
+    curl --fail --location --retry 2 "https://languagetool.org/download/LanguageTool-${LANGUAGETOOL_VERSION}.zip" -o /tmp/lt.zip && \
+    echo "${LANGUAGETOOL_SHA256}  /tmp/lt.zip" | sha256sum --check && \
+    unzip -q /tmp/lt.zip -d /opt && mv "/opt/LanguageTool-${LANGUAGETOOL_VERSION}" /opt/languagetool && \
+    rm -f /tmp/lt.zip && rm -rf /var/lib/apt/lists/*
+WORKDIR /opt/languagetool
+USER 10001:10001
+CMD ["java","-Xms128m","-Xmx650m","-cp","languagetool-server.jar","org.languagetool.server.HTTPServer","--port","8010","--public"]

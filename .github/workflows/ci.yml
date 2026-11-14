@@ -1,0 +1,40 @@
+name: CI
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    services:
+      postgres:
+        image: postgres:17.9-bookworm
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ci-only-postgres
+          POSTGRES_DB: yukti
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd="pg_isready -U postgres -d yukti"
+          --health-interval=5s --health-timeout=3s --health-retries=12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install uv==0.13.6
+      - run: sudo apt-get update && sudo apt-get install -y libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0 fonts-dejavu-core postgresql-client
+      - run: uv sync --locked
+      - run: |
+          PGPASSWORD=ci-only-postgres psql -h localhost -U postgres -d yukti -v ON_ERROR_STOP=1 <<'SQL'
+          CREATE ROLE yukti_app LOGIN NOSUPERUSER NOBYPASSRLS PASSWORD 'ci-only-app';
+          GRANT USAGE, CREATE ON SCHEMA public TO yukti_app;
+          SQL
+      - run: uv run --locked python -m pytest -q
+        env:
+          YUKTI_TEST_DATABASE: postgresql://yukti_app:ci-only-app@localhost:5432/yukti
+      - run: make check
+      - run: docker compose --profile ai --profile scheduler --profile monitoring config --quiet
+        env:
+          POSTGRES_PASSWORD: disposable-ci
+          DB_APP_PASSWORD: disposable-ci-app
+          KC_ADMIN_PASSWORD: disposable-ci-admin

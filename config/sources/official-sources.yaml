@@ -1,0 +1,25 @@
+hosts:
+  openai.com: publisher
+  spark.apache.org: project
+  iceberg.apache.org: project
+  www.postgresql.org: project
+  www.federalreserve.gov: government
+  arxiv.org: preprint
+  export.arxiv.org: preprint
+  www.jmlr.org: journal
+  jmlr.org: journal
+  openreview.net: conference
+  www.ecb.europa.eu: government
+feeds:
+- id: postgresql-news
+  url: https://www.postgresql.org/news.rss
+  topic: data
+  publisher: PostgreSQL Global Development Group
+  kind: brief
+  group: news
+- id: arxiv-modeling
+  url: https://export.arxiv.org/api/query?search_query=cat%3Amath.NA&sortBy=submittedDate&sortOrder=descending&max_results=8
+  topic: math
+  publisher: arXiv
+  kind: preprint
+  group: research

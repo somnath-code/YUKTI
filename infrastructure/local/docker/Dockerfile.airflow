@@ -1,0 +1,17 @@
+FROM apache/airflow:3.1.8-python3.12
+USER root
+RUN apt-get update && apt-get install -y --no-install-recommends libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0 fonts-dejavu-core && rm -rf /var/lib/apt/lists/*
+USER airflow
+COPY infrastructure/local/docker/requirements-worker.txt /opt/yukti/requirements-worker.txt
+RUN pip install --no-cache-dir "apache-airflow==3.1.8" -r /opt/yukti/requirements-worker.txt
+COPY apps/web/public/catalog.json /opt/yukti/apps/web/public/catalog.json
+COPY packages /opt/yukti/packages
+COPY adapters /opt/yukti/adapters
+COPY workers /opt/yukti/workers
+COPY database /opt/yukti/database
+COPY config /opt/yukti/config
+COPY templates /opt/yukti/templates
+COPY workflows /opt/yukti/workflows
+COPY workflows/airflow/dags /opt/airflow/dags
+COPY workflows/airflow/plugins /opt/airflow/plugins
+ENV PYTHONPATH=/opt/yukti

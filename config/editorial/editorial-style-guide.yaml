@@ -1,0 +1,9 @@
+max_issue_articles: 12
+required_sections:
+- what
+- when
+- why
+- context
+- action
+- result
+language: en-GB

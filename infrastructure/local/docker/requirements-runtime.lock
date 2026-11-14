@@ -1,0 +1,107 @@
+annotated-doc==0.0.6
+    # via fastapi
+annotated-types==0.8.0
+    # via pydantic
+anyio==4.16.0
+    # via
+    #   httpx
+    #   starlette
+brotli==1.2.1 ; platform_python_implementation == 'CPython'
+    # via fonttools
+brotlicffi==1.2.1.0 ; platform_python_implementation != 'CPython'
+    # via fonttools
+certifi==2026.10.23
+    # via
+    #   httpcore
+    #   httpx
+cffi==2.1.1
+    # via
+    #   brotlicffi
+    #   cryptography
+    #   weasyprint
+click==8.5.1
+    # via uvicorn
+cryptography==50.0.0
+    # via yukti
+cssselect2==0.10.1
+    # via weasyprint
+defusedxml==0.7.1
+    # via yukti
+fastapi==0.141.1
+    # via yukti
+fonttools==4.68.0
+    # via weasyprint
+h11==0.16.0
+    # via
+    #   httpcore
+    #   uvicorn
+httpcore==1.0.9
+    # via httpx
+httpx==0.28.1
+    # via yukti
+idna==3.20
+    # via
+    #   anyio
+    #   httpx
+jinja2==3.1.6
+    # via yukti
+markupsafe==3.0.4
+    # via jinja2
+pillow==13.0.0
+    # via weasyprint
+psycopg==3.2.9
+    # via yukti
+psycopg-binary==3.2.9 ; implementation_name != 'pypy'
+    # via psycopg
+pycparser==3.12 ; implementation_name != 'PyPy'
+    # via cffi
+pydantic==2.13.4
+    # via
+    #   fastapi
+    #   yukti
+pydantic-core==2.46.4
+    # via pydantic
+pydyf==0.13.0
+    # via weasyprint
+pyjwt==2.15.0
+    # via yukti
+pypdf==6.21.4
+    # via yukti
+pyphen==0.18.1
+    # via weasyprint
+pyyaml==6.0.3
+    # via yukti
+starlette==1.10.0
+    # via fastapi
+tinycss2==1.5.1
+    # via
+    #   cssselect2
+    #   weasyprint
+tinyhtml5==2.1.0
+    # via weasyprint
+typing-extensions==4.16.0
+    # via
+    #   anyio
+    #   fastapi
+    #   psycopg
+    #   pydantic
+    #   pydantic-core
+    #   starlette
+    #   typing-inspection
+typing-inspection==0.4.5
+    # via
+    #   fastapi
+    #   pydantic
+tzdata==2026.6 ; sys_platform == 'win32'
+    # via psycopg
+uvicorn==0.52.1
+    # via yukti
+weasyprint==70.0
+    # via yukti
+webencodings==0.6.1
+    # via
+    #   cssselect2
+    #   tinycss2
+    #   tinyhtml5
+zopfli==0.4.3
+    # via fonttools

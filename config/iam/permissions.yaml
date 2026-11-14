@@ -1,0 +1,10 @@
+permissions:
+- archive:read
+- draft:read
+- article:ingest
+- article:edit
+- article:review
+- issue:create
+- issue:approve
+- issue:release
+- audit:read

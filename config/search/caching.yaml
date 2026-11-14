@@ -1,0 +1,2 @@
+http_cache_control: no-store
+shared_result_cache: false

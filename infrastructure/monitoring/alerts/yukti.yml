@@ -1,0 +1,11 @@
+groups:
+  - name: yukti-availability
+    rules:
+      - alert: YuktiApiScrapeDown
+        expr: up{job="yukti"} == 0 or absent(up{job="yukti"})
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: YUKTI API scrape is unavailable
+          description: Check the API process, health endpoint, database access and Prometheus target.

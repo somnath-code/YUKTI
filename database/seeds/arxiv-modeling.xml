@@ -1,0 +1,3 @@
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Example Atom record</title>
+<entry><id>http://arxiv.org/abs/2412.19437v1</id><title>DeepSeek-V3 Technical Report</title><published>2024-12-27T04:03:16Z</published><summary>Seeded excerpt for parser testing. The authors describe a mixture-of-experts language model.</summary></entry>
+</feed>

@@ -1,0 +1,6 @@
+timezone: Asia/Kolkata
+weekly_draft: 0 6 * * 0
+daily_news: 0 5 * * *
+daily_research: 10 5 * * *
+quality_validation: 25 5 * * *
+weekly_editorial: 45 5 * * 0

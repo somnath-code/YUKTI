@@ -1,0 +1,4 @@
+max_pdf_pages: 20
+require_tags: true
+require_language: true
+number_after_cover: true

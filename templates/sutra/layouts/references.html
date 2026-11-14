@@ -1,0 +1,9 @@
+<section class="page" id="references">
+{% include 'masthead.html' %}
+<h1>Bibliography</h1>
+<ol class="bibliography">
+{% for e in entries|unique(attribute='number') %}{% set a = e.article %}
+<li id="ref-{{ e.number }}">{{ a.source.authors }}. “{{ a.source.title }}.” <em>{{ a.source.venue }}</em>, {{ a.when }}.{% if a.source.doi %} DOI {{ a.source.doi }}.{% endif %}<br><a href="{{ a.source.url }}">{{ a.source.url }}</a></li>
+{% endfor %}
+</ol>
+</section>

@@ -1,0 +1,4 @@
+max_feed_bytes: 524288
+max_items_per_feed: 12
+max_raw_text: 30000
+evidence_review_limit: 200

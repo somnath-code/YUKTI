@@ -1,0 +1,3 @@
+tenant_claim: tenant_id
+allow_cross_tenant: false
+three_distinct_issue_actors: true

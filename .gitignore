@@ -1,0 +1,13 @@
+.env
+.venv/
+var/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+*.zip
+.DS_Store
+/artifacts/
+.terraform/
+*.tfstate*
+*.tfvars

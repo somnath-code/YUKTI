@@ -1,0 +1,23 @@
+reader:
+- archive:read
+curator:
+- archive:read
+- draft:read
+- article:ingest
+- article:edit
+editor:
+- archive:read
+- draft:read
+- article:review
+- issue:create
+approver:
+- archive:read
+- draft:read
+- issue:approve
+publisher:
+- archive:read
+- draft:read
+- issue:release
+auditor:
+- archive:read
+- audit:read

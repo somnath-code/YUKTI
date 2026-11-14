@@ -1,0 +1,9 @@
+<section class="page" aria-labelledby="contents-title">
+{% include 'editorial.html' %}
+<h2 id="contents-title">Contents</h2>
+<ol class="contents">
+{% for e in entries %}<li><a href="#article-{{ e.page }}">{{ e.article.title }} <span>{{ e.page }}</span></a></li>{% endfor %}
+<li><a href="#references">Bibliography <span>{{ entries|length + 3 }}</span></a></li>
+{% if corrections %}<li><a href="#corrections">Corrections <span>{{ entries|length + 4 }}</span></a></li>{% endif %}
+</ol>
+</section>

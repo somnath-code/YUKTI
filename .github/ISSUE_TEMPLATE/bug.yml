@@ -1,0 +1,9 @@
+name: Bug report
+description: Report a reproducible defect
+body:
+  - type: textarea
+    attributes:
+      label: Steps, observed behavior and expected behavior
+      description: Include the version and execution path. Remove tokens, credentials and private data.
+    validations:
+      required: true

@@ -1,0 +1,10 @@
+<article class="page" id="article-{{ e.page }}">
+{% include 'masthead.html' %}
+<h1>{{ a.title }}</h1>
+<p class="dek">{{ a.summary }} <a href="#ref-{{ e.number }}">[{{ e.number }}]</a></p>
+<h2>What · When · Why</h2>
+<dl><dt>What</dt><dd>{{ a.what }}</dd><dt>When</dt><dd>{{ a.when }}</dd><dt>Why</dt><dd>{{ a.why }}</dd></dl>
+<h2>Context · Action · Result</h2>
+<dl><dt>Context</dt><dd>{{ a.context }}</dd><dt>Action</dt><dd>{{ a.action }}</dd><dt>Result</dt><dd>{{ a.result }}</dd></dl>
+{% if a.formula %}<p class="formula">{{ a.formula }}</p>{% endif %}
+</article>

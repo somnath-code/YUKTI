@@ -1,0 +1,91 @@
+name: yukti
+x-runtime-env: &runtime-env
+  DATABASE_URL: postgresql://yukti_app:${DB_APP_PASSWORD:?Run scripts/setup/init_env.py}@db:5432/yukti
+  ARTIFACT_DIR: /var/yukti/artifacts
+  OIDC_ISSUER: http://localhost:8081/realms/yukti
+  OIDC_JWKS_URL: http://keycloak:8080/realms/yukti/protocol/openid-connect/certs
+  LANGUAGETOOL_URL: http://languagetool:8010/v2/check
+  OLLAMA_URL: http://ollama:11434
+  OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen2.5:1.5b}
+  LIVE_FEEDS: ${LIVE_FEEDS:-0}
+  SCHEDULER_TENANT: ${SCHEDULER_TENANT:-demo}
+services:
+  db:
+    image: postgres:17.9-bookworm
+    environment:
+      POSTGRES_DB: yukti
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Run scripts/setup/init_env.py}
+      DB_APP_PASSWORD: ${DB_APP_PASSWORD:?Run scripts/setup/init_env.py}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d yukti -h 127.0.0.1"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    volumes:
+      - postgres:/var/lib/postgresql/data
+      - ./infrastructure/local/docker/init-db.sh:/docker-entrypoint-initdb.d/10-app-role.sh:ro
+  api:
+    build: {context: ., dockerfile: infrastructure/local/docker/Dockerfile}
+    environment: *runtime-env
+    depends_on:
+      db: {condition: service_healthy}
+    ports: ["127.0.0.1:8000:8000"]
+    volumes: ["artifacts:/var/yukti/artifacts"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3)"]
+      interval: 5s
+      timeout: 4s
+      retries: 20
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.4.7
+    command: ["start-dev", "--import-realm", "--hostname=http://localhost:8081", "--hostname-backchannel-dynamic=true"]
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: local-admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KC_ADMIN_PASSWORD:?Run scripts/setup/init_env.py}
+    ports: ["127.0.0.1:8081:8080"]
+    volumes:
+      - ./infrastructure/local/keycloak/yukti-realm.json:/opt/keycloak/data/import/yukti-realm.json:ro
+      - keycloak:/opt/keycloak/data/h2
+  languagetool:
+    build: {context: ., dockerfile: infrastructure/local/docker/Dockerfile.languagetool}
+  ollama:
+    image: ollama/ollama:0.13.1
+    profiles: ["ai"]
+    volumes: ["models:/root/.ollama"]
+  artifact-acl:
+    image: alpine:3.23.2
+    profiles: ["scheduler"]
+    command: ["sh", "-c", "chgrp 0 /data && chmod 2770 /data"]
+    volumes: ["artifacts:/data"]
+    depends_on:
+      api: {condition: service_healthy}
+  airflow:
+    profiles: ["scheduler"]
+    build: {context: ., dockerfile: infrastructure/local/docker/Dockerfile.airflow}
+    command: ["standalone"]
+    environment:
+      <<: *runtime-env
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+    ports: ["127.0.0.1:8080:8080"]
+    volumes:
+      - airflow:/opt/airflow
+      - ./workflows/airflow/dags:/opt/airflow/dags:ro
+      - ./workflows/airflow/plugins:/opt/airflow/plugins:ro
+      - artifacts:/var/yukti/artifacts
+    depends_on:
+      artifact-acl: {condition: service_completed_successfully}
+  prometheus:
+    profiles: ["monitoring"]
+    image: prom/prometheus:v3.5.1
+    ports: ["127.0.0.1:9090:9090"]
+    volumes:
+      - ./infrastructure/monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./infrastructure/monitoring/alerts/yukti.yml:/etc/prometheus/yukti-alerts.yml:ro
+volumes:
+  postgres:
+  keycloak:
+  artifacts:
+  airflow:
+  models:

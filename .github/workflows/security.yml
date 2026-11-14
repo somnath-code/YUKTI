@@ -1,0 +1,20 @@
+name: Security checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install uv==0.13.6 pip-audit==2.9.0
+      - run: uv export --locked --no-dev --no-hashes --no-emit-project --no-header --quiet -o /tmp/yukti-runtime.txt
+      - run: pip-audit --strict --disable-pip --no-deps -r /tmp/yukti-runtime.txt
+      - run: |
+          if git ls-files --error-unmatch .env >/dev/null 2>&1; then
+            echo 'Do not commit .env'
+            exit 1
+          fi

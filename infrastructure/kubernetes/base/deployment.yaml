@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yukti-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: yukti-api
+  template:
+    metadata:
+      labels:
+        app: yukti-api
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: api
+          image: yukti-api:local
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8000
+          envFrom:
+            - secretRef:
+                name: yukti-runtime-env
+          env:
+            - name: ARTIFACT_DIR
+              value: /var/yukti/artifacts
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+          livenessProbe:
+            tcpSocket:
+              port: http
+          resources:
+            requests: {cpu: 200m, memory: 256Mi}
+            limits: {cpu: "2", memory: 1Gi}
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            readOnlyRootFilesystem: true
+          volumeMounts:
+            - {name: artifacts, mountPath: /var/yukti/artifacts}
+            - {name: tmp, mountPath: /tmp}
+      volumes:
+        - name: artifacts
+          persistentVolumeClaim:
+            claimName: yukti-artifacts
+        - name: tmp
+          emptyDir: {}

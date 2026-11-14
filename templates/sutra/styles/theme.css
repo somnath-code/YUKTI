@@ -1,0 +1,9 @@
+* { box-sizing: border-box; }
+body { margin: 0; color: var(--navy); font: 11pt/1.5 sans-serif; }
+.cover-caption { position: absolute; bottom: 8mm; left: 27mm; right: 27mm; padding: 2mm 3mm; text-align: center; background: #091625; color: #f0cc79; font: bold 15pt/1.2 serif; }
+.cover-caption small {font: 8pt/1.2 sans-serif;}
+.mast { text-transform: uppercase; letter-spacing: .12em; font-weight: bold; font-size: 9pt; padding: 0 0 4mm; border-bottom: 1px solid var(--gold); }
+.sub { color: #465577; }
+.contents a { display: block; border-bottom: 1px solid #bcc2cb; padding-bottom: 3mm; }
+.contents span { float: right; }
+.formula { padding: 3mm 5mm; border-left: 2px solid var(--gold); background: #f4f1e9; font: 13pt serif; }

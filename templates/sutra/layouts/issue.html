@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="{{ magazine.language }}">
+<head>
+<meta charset="utf-8">
+<meta name="author" content="YUKTI">
+<title>SUTRA · {{ title }}</title>
+{% for stylesheet in styles %}<link rel="stylesheet" href="{{ stylesheet }}">{% endfor %}
+</head>
+<body>
+{% include 'cover.html' %}
+{% include 'contents.html' %}
+{% for e in entries %}
+  {% set a = e.article %}
+  {% if a.formula %}{% include 'mathematics.html' %}
+  {% elif a.kind == 'brief' %}{% include 'news-brief.html' %}
+  {% else %}{% include 'research-paper.html' %}
+  {% endif %}
+{% endfor %}
+{% include 'references.html' %}
+{% if corrections %}{% include 'corrections.html' %}{% endif %}
+</body>
+</html>

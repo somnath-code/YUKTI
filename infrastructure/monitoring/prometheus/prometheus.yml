@@ -1,0 +1,9 @@
+rule_files:
+  - /etc/prometheus/yukti-alerts.yml
+global:
+  scrape_interval: 15s
+scrape_configs:
+  - job_name: yukti
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["api:8000"]

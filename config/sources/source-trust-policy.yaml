@@ -1,0 +1,10 @@
+source_types:
+- publisher
+- project
+- government
+- preprint
+- journal
+- conference
+allow_redirects: false
+human_verification: Check the direct original source, identity, date, publication
+  status and corrections.

@@ -1,0 +1,5 @@
+@page { size: A4; margin: 22mm 21mm 21mm; @bottom-center { content: counter(page); color: #36435f; font: 10pt sans-serif; } }
+@page cover { margin: 0; @bottom-center { content: none; } }
+.cover { page: cover; position: relative; background: #101b35; height: 297mm; width: 210mm; }
+.cover img {width: 210mm; height: 297mm; object-fit: cover; display: block; }
+.page { break-before: page; }
