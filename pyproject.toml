@@ -16,7 +16,7 @@ dependencies = [
     "weasyprint==70.0",
     "PyYAML==6.0.3",
     "fastapi==0.141.1",
-    "uvicorn==0.52.1",
+    "uvicorn==0.54.0",
 ]
 
 [dependency-groups]
