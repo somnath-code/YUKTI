@@ -14,7 +14,7 @@ jobs:
       - run: sudo apt-get update && sudo apt-get install -y libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0 fonts-dejavu-core
       - run: uv run --locked python -m pytest -q tests/pdf_layout tests/accessibility
       - run: uv run --locked python -m scripts.publishing.render_sample --output var/sutra-preview.pdf
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: sutra-preview
           path: var/sutra-preview.pdf
