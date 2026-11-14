@@ -17,7 +17,7 @@ jobs:
       - run: uv run --locked python -m scripts.verification.structure
       - run: uv run --locked python -m pytest -q
       - run: git archive --format=zip --prefix=yukti/ --output=yukti.zip HEAD
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: yukti-release
           path: yukti.zip
