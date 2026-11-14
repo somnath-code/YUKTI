@@ -21,7 +21,7 @@ dependencies = [
 
 [dependency-groups]
 dev = ["pytest==8.4.1"]
-spark = ["pyspark==4.0.0"]
+spark = ["pyspark==4.3.0"]
 
 [tool.uv]
 package = false
